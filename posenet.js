@@ -1,5 +1,6 @@
 let video;
 let poseNet;
+let badPostureStartTime = 0;
 const audio = document.createElement('audio')
 audio.src = 'https://www.w3schools.com/html/horse.mp3'
 
@@ -126,9 +127,18 @@ function drawEyes(poses)  {
 function blurScreen() { 
   document.body.style.filter = 'blur(10px)';
   document.body.style.transition= '0.9s';
-  audio.play()
+
+  if(badPostureStartTime === 0){
+    badPostureStartTime = Date.now()
+  }
+
+  const badPostureSeconds = (Date.now() - badPostureStartTime)/1000
+  if(badPostureSeconds > 60){
+    audio.play()
+  }
 }
 
 function removeBlur() {
   document.body.style.filter = 'blur(0px)';
+  badPostureStartTime = 0
 }
